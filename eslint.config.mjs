@@ -36,9 +36,9 @@ export default [
               ]
             },
             {
-              sourceTag: 'scope:test',
+              sourceTag: 'scope:tests',
               onlyDependOnLibsWithTags: [
-                'scope:test',
+                'scope:tests',
                 'scope:application',
                 'scope:domain',
                 'scope:infrastructure'
