@@ -7,7 +7,15 @@ describe('Create Org Command', () => {
   let handler: CreateOrgCommandHandler;
   let eventStore: FakeEventStore;
 
-  it('should raise an OrgCreated event', () => {
-    expect(true).toBeTruthy();
+  beforeEach(() => {
+    dto = {};
+    command = new CreateOrgCommand(dto);
+    eventStore = new FakeEventStore();
+    handler = new CreateOrgCommandHandler(eventStore);
+  })
+
+  it('should return a string that is the ID of the created org', async () => {
+    const id = await handler.execute(command);
+    expect(eventStore.events.get(id)).toBeDefined();
   });
 });

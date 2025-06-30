@@ -1,8 +1,8 @@
 import { DomainEvent, EventStore } from '@austere-albatross/austere-domain';
 
 export class FakeEventStore implements EventStore {
-  private events: Map<string, DomainEvent[]> = new Map();
-  private eventCounts: Map<string, number> = new Map();
+  events: Map<string, DomainEvent[]> = new Map();
+  eventCounts: Map<string, number> = new Map();
 
   async appendEvents(streamId: string, events: DomainEvent[], expectedVersion?: number): Promise<void> {
     const currentVersion = this.eventCounts.get(streamId) || 0;
