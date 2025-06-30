@@ -1,4 +1,4 @@
-import { EventStore } from '@austere-albatross/austere-domain';
+import { EventStore, OrganizationId } from '@austere-albatross/austere-domain';
 import { CreateOrgCommand } from './create-org.command';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
@@ -8,8 +8,13 @@ export class CreateOrgCommandHandler implements ICommandHandler<CreateOrgCommand
   }
 
   async execute(command: CreateOrgCommand): Promise<string> {
-    const id = '123';
-    await this.eventStore.appendEvents(id, []);
-    return Promise.resolve(id);
+    const id = new OrganizationId(crypto.randomUUID());
+    await this.eventStore.appendEvents(id.value(), [{
+      eventType: 'OrgCreated',
+      aggregateId: id.value(),
+      eventVersion: 0,
+      occurredOn: new Date(),
+    }]);
+    return Promise.resolve(id.value());
   }
 }
