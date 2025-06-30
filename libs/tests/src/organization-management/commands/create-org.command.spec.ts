@@ -1,13 +1,21 @@
 import { FakeEventStore } from '../../common/fixtures';
 import { CreateOrgCommand, CreateOrgCommandHandler } from '@austere-albatross/austere-application';
+import { DomainEvent } from '@austere-albatross/austere-domain';
+
+type OrgCreatedEvent = DomainEvent & {
+  eventType: 'OrgCreated',
+  data: { name: string; }
+};
 
 describe('Create Org Command', () => {
   let command: CreateOrgCommand;
   let handler: CreateOrgCommandHandler;
   let eventStore: FakeEventStore;
+  let orgName: string;
 
   beforeEach(() => {
-    command = new CreateOrgCommand();
+    orgName = 'Test Org';
+    command = new CreateOrgCommand(orgName);
     eventStore = new FakeEventStore();
     handler = new CreateOrgCommandHandler(eventStore);
   })
@@ -18,10 +26,25 @@ describe('Create Org Command', () => {
     expect(orgEventStream).toBeDefined();
   });
 
-  it('should append an OrgCreated event to the event store', async () => {
-    const id = await handler.execute(command);
-    const orgEventStream = eventStore.events.get(id);
-    const orgCreatedEvent = orgEventStream?.[0];
-    expect(orgCreatedEvent?.eventType).toBe('OrgCreated');
+  describe('OrgCreatedEvent on EventStore', () => {
+
+    let orgId: string;
+    let orgCreatedEvent: OrgCreatedEvent;
+
+    beforeEach(async () => {
+      eventStore.events.clear();
+      orgId = await handler.execute(command);
+      const orgEventStream = eventStore.events.get(orgId)!;
+      orgCreatedEvent = orgEventStream[0]! as OrgCreatedEvent;
+    });
+
+    it('should be of the correct type', async () => {
+      expect(orgCreatedEvent.eventType).toBe('OrgCreated');
+    });
+
+    it('should have the correct org name', async () => {
+      expect(orgCreatedEvent.data.name).toBe(orgName);
+    });
+
   });
 });

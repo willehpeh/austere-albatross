@@ -8,8 +8,8 @@ export class OrganizationId implements ValueObject<string> {
     return this.id;
   }
 
-  equals(vo: ValueObject<string>): boolean {
-    return vo.value() === this.id;
+  equals(other: OrganizationId): boolean {
+    return other.value() === this.id;
   }
 
 }

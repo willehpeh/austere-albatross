@@ -1,7 +1,6 @@
-export type DomainEvent<T = null> = {
+export type DomainEvent = {
   readonly aggregateId: string;
   readonly eventType: string;
   readonly eventVersion: number;
   readonly occurredOn: Date;
-  readonly data?: T;
 }
