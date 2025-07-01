@@ -1,5 +1,5 @@
-import { AggregateRoot, EventPublisher } from '@nestjs/cqrs';
-import { DomainEvent } from '@austere-albatross/austere-domain';
+import { AggregateRoot } from '@nestjs/cqrs';
+import { DomainEvent, EventPublisher } from '@austere-albatross/austere-domain';
 
 export class FakeEventPublisher extends EventPublisher {
   private publishedEvents: DomainEvent[] = [];

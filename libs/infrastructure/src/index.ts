@@ -1,1 +1,1 @@
-
+export * from './nestjs-event-publisher.adapter';
