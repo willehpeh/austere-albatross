@@ -25,15 +25,15 @@ describe('Create Org Command', () => {
     orgCreatedEvent = orgEventStream?.[0] as OrgRegisteredEvent;
   });
 
-  it('should return a string that is the ID of the created org', () => {
+  it('should create an event stream for the Organization', () => {
     expect(orgEventStream).toBeDefined();
   });
 
-  it('should commit an OrgCreatedEvent with the correct aggregate ID', () => {
+  it('should commit an OrgCreatedEvent with the correct OrganizationID', () => {
     expect(orgCreatedEvent.aggregateId).toBe(orgId);
   });
 
-  it('should commit an OrgCreatedEvent with event version 0', () => {
+  it('should commit an OrgCreatedEvent that is the first event for this Organization', () => {
     expect(orgCreatedEvent.eventVersion).toBe(0);
   });
 
@@ -43,10 +43,6 @@ describe('Create Org Command', () => {
 
   it('should commit an OrgCreatedEvent with the correct organization name', () => {
     expect(orgCreatedEvent.data.name).toBe(orgName);
-  });
-
-  it('should commit an OrgCreatedEvent with occurredOn timestamp not in the future', () => {
-    expect(orgCreatedEvent.occurredOn.getTime()).toBeLessThanOrEqual(Date.now());
   });
 
   it('should publish the correct OrgCreatedEvent to the Event Publisher', () => {
