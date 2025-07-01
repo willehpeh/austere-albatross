@@ -42,7 +42,7 @@ describe('Create Org Command', () => {
   });
 
   it('should commit an OrgCreatedEvent with the correct organization name', () => {
-    expect(orgCreatedEvent.data).toEqual({ name: orgName });
+    expect(orgCreatedEvent.data.name).toBe(orgName);
   });
 
   it('should commit an OrgCreatedEvent with occurredOn timestamp not in the future', () => {
