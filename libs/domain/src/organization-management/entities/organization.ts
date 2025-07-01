@@ -1,7 +1,7 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { DomainEvent } from '../../common';
 import { OrganizationId, OrganizationName } from '../value-objects';
-import { OrgCreatedEvent } from '../events';
+import { OrgRegisteredEvent } from '../events';
 
 export class Organization extends AggregateRoot<DomainEvent> {
 
@@ -10,7 +10,7 @@ export class Organization extends AggregateRoot<DomainEvent> {
   constructor(private readonly id: OrganizationId,
               private readonly name: OrganizationName) {
     super();
-    this.apply(new OrgCreatedEvent(
+    this.apply(new OrgRegisteredEvent(
       id.value(),
       this.nextEventVersion++,
       { name: name.value() })

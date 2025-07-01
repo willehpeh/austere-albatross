@@ -1,1 +1,1 @@
-export * from './org-created.event';
+export * from './org-registered.event';

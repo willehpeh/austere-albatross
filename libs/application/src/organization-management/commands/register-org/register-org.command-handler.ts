@@ -5,16 +5,16 @@ import {
   OrganizationId,
   OrganizationName
 } from '@austere-albatross/austere-domain';
-import { CreateOrgCommand } from './create-org.command';
+import { RegisterOrgCommand } from './register-org.command';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-@CommandHandler(CreateOrgCommand)
-export class CreateOrgCommandHandler implements ICommandHandler<CreateOrgCommand> {
+@CommandHandler(RegisterOrgCommand)
+export class RegisterOrgCommandHandler implements ICommandHandler<RegisterOrgCommand> {
   constructor(private readonly eventStore: EventStore,
               private readonly eventPublisher: EventPublisher) {
   }
 
-  async execute(command: CreateOrgCommand): Promise<string> {
+  async execute(command: RegisterOrgCommand): Promise<string> {
     const id = new OrganizationId(crypto.randomUUID());
     const name = new OrganizationName(command.name);
     const org = new Organization(id, name);

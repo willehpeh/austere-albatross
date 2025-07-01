@@ -1,1 +1,1 @@
-export * from './create-org';
+export * from './register-org';

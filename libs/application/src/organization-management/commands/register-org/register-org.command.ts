@@ -1,3 +1,3 @@
-export class CreateOrgCommand {
+export class RegisterOrgCommand {
   constructor(public readonly name: string) {}
 }

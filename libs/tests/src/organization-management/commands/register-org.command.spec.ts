@@ -1,28 +1,28 @@
 import { FakeEventPublisher, FakeEventStore } from '../../common/fixtures';
-import { CreateOrgCommand, CreateOrgCommandHandler } from '@austere-albatross/austere-application';
-import { DomainEvent, OrgCreatedEvent } from '@austere-albatross/austere-domain';
+import { RegisterOrgCommand, RegisterOrgCommandHandler } from '@austere-albatross/austere-application';
+import { DomainEvent, OrgRegisteredEvent } from '@austere-albatross/austere-domain';
 
 
 describe('Create Org Command', () => {
-  let command: CreateOrgCommand;
-  let handler: CreateOrgCommandHandler;
+  let command: RegisterOrgCommand;
+  let handler: RegisterOrgCommandHandler;
   let eventStore: FakeEventStore;
   let eventPublisher: FakeEventPublisher;
 
   let orgName: string;
   let orgId: string;
   let orgEventStream: DomainEvent[] | undefined;
-  let orgCreatedEvent: OrgCreatedEvent;
+  let orgCreatedEvent: OrgRegisteredEvent;
 
   beforeEach(async () => {
     orgName = 'Test Org';
-    command = new CreateOrgCommand(orgName);
+    command = new RegisterOrgCommand(orgName);
     eventStore = new FakeEventStore();
     eventPublisher = new FakeEventPublisher();
-    handler = new CreateOrgCommandHandler(eventStore, eventPublisher);
+    handler = new RegisterOrgCommandHandler(eventStore, eventPublisher);
     orgId = await handler.execute(command);
     orgEventStream = eventStore.events.get(orgId);
-    orgCreatedEvent = orgEventStream?.[0] as OrgCreatedEvent;
+    orgCreatedEvent = orgEventStream?.[0] as OrgRegisteredEvent;
   });
 
   it('should return a string that is the ID of the created org', () => {
@@ -38,7 +38,7 @@ describe('Create Org Command', () => {
   });
 
   it('should commit an OrgCreatedEvent with the correct event type', () => {
-    expect(orgCreatedEvent.eventType).toBe('OrgCreated');
+    expect(orgCreatedEvent.eventType).toBe('OrgRegistered');
   });
 
   it('should commit an OrgCreatedEvent with the correct organization name', () => {
