@@ -49,4 +49,13 @@ describe('Create Org Command', () => {
     expect(eventPublisher.getPublishedEvents()).toEqual([orgCreatedEvent]);
   });
 
+  it('should throw an error when trying to create an organization with an existing name', async () => {
+    // Arrange
+    const duplicateName = 'Test Org';
+    const duplicateCommand = new RegisterOrgCommand(duplicateName);
+    
+    // Act & Assert
+    await expect(handler.execute(duplicateCommand)).rejects.toThrow('Organization with this name already exists');
+  });
+
 });

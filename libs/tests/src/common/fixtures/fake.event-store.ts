@@ -1,4 +1,4 @@
-import { DomainEvent, EventStore } from '@austere-albatross/austere-domain';
+import { DomainEvent, EventStore, OrgRegisteredEvent } from '@austere-albatross/austere-domain';
 
 export class FakeEventStore implements EventStore {
   events: Map<string, DomainEvent[]> = new Map();
@@ -37,5 +37,16 @@ export class FakeEventStore implements EventStore {
 
   private expectedVersionIsProvidedAndWrong(expectedVersion: number | undefined, currentVersion: number) {
     return expectedVersion !== undefined && expectedVersion !== currentVersion;
+  }
+
+  async organizationExistsWithName(name: string): Promise<boolean> {
+    for (const events of this.events.values()) {
+      for (const event of events) {
+        if (event.eventType === 'OrgRegistered' && (event as OrgRegisteredEvent).data.name === name) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }
