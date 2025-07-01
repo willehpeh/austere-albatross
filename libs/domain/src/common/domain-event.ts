@@ -1,6 +1,9 @@
-export type DomainEvent = {
-  readonly aggregateId: string;
-  readonly eventType: string;
-  readonly eventVersion: number;
+export class DomainEvent {
   readonly occurredOn: Date;
+
+  constructor(public readonly aggregateId: string,
+              public readonly eventVersion: number,
+              public readonly eventType: string) {
+    this.occurredOn = new Date();
+  }
 }
