@@ -47,10 +47,6 @@ describe('Create Workflow Command', () => {
     expect(workflowCreatedEvent.data.organizationId).toBe(organizationId);
   });
 
-  it('should create a Workflow with no steps initially', () => {
-    expect(workflowCreatedEvent.data.steps).toEqual([]);
-  });
-
   it('should inform others that the Workflow was created', () => {
     expect(eventPublisher.getPublishedEvents()).toEqual([workflowCreatedEvent]);
   });

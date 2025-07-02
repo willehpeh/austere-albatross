@@ -12,5 +12,4 @@ export class WorkflowCreatedEvent extends DomainEvent {
 export type WorkflowCreatedEventProps = {
   readonly name: string;
   readonly organizationId: string;
-  readonly steps: readonly string[];
 };

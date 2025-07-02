@@ -19,7 +19,6 @@ export class Workflow extends AggregateRoot<DomainEvent> {
       {
         name: name.value(),
         organizationId: organizationId.value(),
-        steps: []
       }
     ));
   }
