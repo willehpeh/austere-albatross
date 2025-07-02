@@ -25,35 +25,32 @@ describe('Create Org Command', () => {
     orgCreatedEvent = orgEventStream?.[0] as OrgRegisteredEvent;
   });
 
-  it('should create an event stream for the Organization', () => {
+  it('should register the Organization', () => {
     expect(orgEventStream).toBeDefined();
-  });
-
-  it('should commit an OrgCreatedEvent with the correct OrganizationID', () => {
-    expect(orgCreatedEvent.aggregateId).toBe(orgId);
-  });
-
-  it('should commit an OrgCreatedEvent that is the first event for this Organization', () => {
-    expect(orgCreatedEvent.eventVersion).toBe(0);
-  });
-
-  it('should commit an OrgCreatedEvent with the correct event type', () => {
     expect(orgCreatedEvent.eventType).toBe('OrgRegistered');
   });
 
-  it('should commit an OrgCreatedEvent with the correct organization name', () => {
+  it('should register an Organization with the correct OrganizationID', () => {
+    expect(orgCreatedEvent.aggregateId).toBe(orgId);
+  });
+
+  it('should register an Organization with no history', () => {
+    expect(orgCreatedEvent.eventVersion).toBe(0);
+  });
+
+  it('should register an Organization with the correct name', () => {
     expect(orgCreatedEvent.data.name).toBe(orgName);
   });
 
-  it('should publish the correct OrgCreatedEvent to the Event Publisher', () => {
+  it('should inform others that the Organization was created', () => {
     expect(eventPublisher.getPublishedEvents()).toEqual([orgCreatedEvent]);
   });
 
-  it('should throw an error when trying to create an organization with an existing name', async () => {
+  it('should refuse to register an organization with an existing name', async () => {
     // Arrange
     const duplicateName = 'Test Org';
     const duplicateCommand = new RegisterOrgCommand(duplicateName);
-    
+
     // Act & Assert
     await expect(handler.execute(duplicateCommand)).rejects.toThrow('Organization with this name already exists');
   });

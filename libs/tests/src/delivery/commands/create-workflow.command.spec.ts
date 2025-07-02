@@ -26,35 +26,32 @@ describe('Create Workflow Command', () => {
     workflowCreatedEvent = workflowEventStream?.[0] as WorkflowCreatedEvent;
   });
 
-  it('should create an event stream for the Workflow', () => {
+  it('should create the Workflow', () => {
     expect(workflowEventStream).toBeDefined();
-  });
-
-  it('should commit a WorkflowCreatedEvent with the correct aggregate ID', () => {
-    expect(workflowCreatedEvent.aggregateId).toBe(workflowId);
-  });
-
-  it('should commit a WorkflowCreatedEvent with event version 0', () => {
-    expect(workflowCreatedEvent.eventVersion).toBe(0);
-  });
-
-  it('should commit a WorkflowCreatedEvent with the correct event type', () => {
     expect(workflowCreatedEvent.eventType).toBe('WorkflowCreated');
   });
 
-  it('should commit a WorkflowCreatedEvent with the correct workflow name', () => {
+  it('should create a Workflow with the correct WorkflowID', () => {
+    expect(workflowCreatedEvent.aggregateId).toBe(workflowId);
+  });
+
+  it('should create a Workflow with no history', () => {
+    expect(workflowCreatedEvent.eventVersion).toBe(0);
+  });
+
+  it('should create a Workflow with the correct name', () => {
     expect(workflowCreatedEvent.data.name).toBe(workflowName);
   });
 
-  it('should commit a WorkflowCreatedEvent with the correct organization ID', () => {
+  it('should create a Workflow belonging to the correct Organization', () => {
     expect(workflowCreatedEvent.data.organizationId).toBe(organizationId);
   });
 
-  it('should commit a WorkflowCreatedEvent with no steps', () => {
+  it('should create a Workflow with no steps initially', () => {
     expect(workflowCreatedEvent.data.steps).toEqual([]);
   });
 
-  it('should publish the correct WorkflowCreatedEvent to the Event Publisher', () => {
+  it('should inform others that the Workflow was created', () => {
     expect(eventPublisher.getPublishedEvents()).toEqual([workflowCreatedEvent]);
   });
 });
