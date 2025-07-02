@@ -49,12 +49,10 @@ describe('Create Org Command', () => {
   });
 
   it('should refuse to register an organization with an existing name', async () => {
-    // Arrange
     const duplicateName = 'Test Org';
     const duplicateCommand = new RegisterOrgCommand(duplicateName);
     await organizationNameReadModel.addName(duplicateName);
-    
-    // Act & Assert
+
     await expect(handler.execute(duplicateCommand)).rejects.toThrow('Organization with this name already exists');
   });
 
