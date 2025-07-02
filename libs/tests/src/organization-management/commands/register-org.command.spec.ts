@@ -1,4 +1,4 @@
-import { FakeEventPublisher, FakeEventStore } from '../../common/fixtures';
+import { FakeEventPublisher, FakeEventStore, FakeOrganizationNameReadModel } from '../../common/fixtures';
 import { RegisterOrgCommand, RegisterOrgCommandHandler } from '@austere-albatross/austere-application';
 import { DomainEvent, OrgRegisteredEvent } from '@austere-albatross/austere-domain';
 
@@ -8,6 +8,7 @@ describe('Create Org Command', () => {
   let handler: RegisterOrgCommandHandler;
   let eventStore: FakeEventStore;
   let eventPublisher: FakeEventPublisher;
+  let organizationNameReadModel: FakeOrganizationNameReadModel;
 
   let orgName: string;
   let orgId: string;
@@ -19,7 +20,8 @@ describe('Create Org Command', () => {
     command = new RegisterOrgCommand(orgName);
     eventStore = new FakeEventStore();
     eventPublisher = new FakeEventPublisher();
-    handler = new RegisterOrgCommandHandler(eventStore, eventPublisher);
+    organizationNameReadModel = new FakeOrganizationNameReadModel();
+    handler = new RegisterOrgCommandHandler(eventStore, eventPublisher, organizationNameReadModel);
     orgId = await handler.execute(command);
     orgEventStream = eventStore.events.get(orgId);
     orgCreatedEvent = orgEventStream?.[0] as OrgRegisteredEvent;
@@ -50,7 +52,8 @@ describe('Create Org Command', () => {
     // Arrange
     const duplicateName = 'Test Org';
     const duplicateCommand = new RegisterOrgCommand(duplicateName);
-
+    await organizationNameReadModel.addName(duplicateName);
+    
     // Act & Assert
     await expect(handler.execute(duplicateCommand)).rejects.toThrow('Organization with this name already exists');
   });

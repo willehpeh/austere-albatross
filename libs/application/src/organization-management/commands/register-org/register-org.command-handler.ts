@@ -4,6 +4,7 @@ import {
   Organization,
   OrganizationId,
   OrganizationName,
+  OrganizationNameReadModel,
   OrganizationUniquenessService
 } from '@austere-albatross/austere-domain';
 import { RegisterOrgCommand } from './register-org.command';
@@ -14,8 +15,9 @@ export class RegisterOrgCommandHandler implements ICommandHandler<RegisterOrgCom
   private readonly uniquenessService: OrganizationUniquenessService;
 
   constructor(private readonly eventStore: EventStore,
-              private readonly eventPublisher: EventPublisher) {
-    this.uniquenessService = new OrganizationUniquenessService(eventStore);
+              private readonly eventPublisher: EventPublisher,
+              private readonly organizationNameReadModel: OrganizationNameReadModel) {
+    this.uniquenessService = new OrganizationUniquenessService(organizationNameReadModel);
   }
 
   async execute(command: RegisterOrgCommand): Promise<string> {
