@@ -47,6 +47,10 @@ describe('Create Workflow Command', () => {
     expect(workflowCreatedEvent.data.organizationId).toBe(organizationId);
   });
 
+  it('should create a Workflow with steps: committed, in-process, and completed', () => {
+    expect(workflowCreatedEvent.data.steps).toEqual([{ label: 'committed' }, { label: 'in-process' }, { label: 'completed' }]);
+  });
+
   it('should inform others that the Workflow was created', () => {
     expect(eventPublisher.getPublishedEvents()).toEqual([workflowCreatedEvent]);
   });
